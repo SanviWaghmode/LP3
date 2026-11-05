@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f4f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            background-color: #0078ff;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #005fcc;
+        }
+
+        .copied {
+            background-color: #00c851 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="button-container">
+        <button onclick="copyCode(1, this)">1</button>
+        <button onclick="copyCode(2, this)">2</button>
+        <button onclick="copyCode(3, this)">3</button>
+        <button onclick="copyCode(4, this)">4</button>
+        <button onclick="copyCode(5, this)">5</button>
+        <button onclick="copyCode(6, this)">6</button>
+        <button onclick="copyCode(7, this)">7</button>
+
+
+
+    </div>
+
+    <script>
+        const assignmentCodes = {
+            1: `import java.util.*;
+
+public class Fibonacci{
+    static int fibonacciRec(int n ){
+        if(n<=1){
+            return n;
+        }
+
+        return fibonacciRec(n-1) + fibonacciRec(n-2);
+    }
+
+    static int fibonacciIter(int n){
+        if(n<=1){
+            return n;
+        }
+
+        int a =0; 
+        int b = 1;
+        int c;
+
+        for(int i = 2; i<=n ;i++){
+            c= a+b;
+            a= b;
+            b=c;
+
+        }
+        return b;
+    }
+
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number: ");
+        int n = sc.nextInt();
+        System.out.println("Fibonacci of " + n + " is: " + fibonacciRec(n));
+        System.out.println("Fibonacci of " + n + " is: " + fibonacciIter(n));
+    }
+    
+}`,
+            2: `import java.util.*;
+
+class Node {
+    char ch;
+    int freq;
+    Node left, right;
+
+    Node(char ch, int freq) {
+        this.ch = ch;
+        this.freq = freq;
+    }
+
+    Node(int freq, Node left, Node right) {
+        this.ch = '-';
+        this.freq = freq;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Huffman {
+
+    static void printCode(Node root, String code) {
+        if (root == null) {
+            return;
+        }
+
+        // Leaf node
+        if (root.left == null && root.right == null) {
+            System.out.println(root.ch + " : " + code);
+            return;
+        }
+
+        printCode(root.left, code + "0");
+        printCode(root.right, code + "1");
+    }
+
+    public static void main(String[] args) {
+
+        char[] chars = {'a', 'b', 'c', 'd', 'e', 'f'};
+        int[] freq = {5, 9, 12, 13, 16, 45};
+
+        PriorityQueue<Node> pq =
+            new PriorityQueue<>((a, b) -> a.freq - b.freq);
+
+        // Add each character as a node
+        for (int i = 0; i < chars.length; i++) {
+            pq.add(new Node(chars[i], freq[i]));
+        }
+
+        // Combine two minimum-frequency nodes
+        while (pq.size() > 1) {
+            Node left = pq.poll();
+            Node right = pq.poll();
+
+            Node parent = new Node(
+                left.freq + right.freq, left, right
+            );
+
+            pq.add(parent);
+        }
+
+        // Remaining node is the root
+        Node root = pq.poll();
+
+        // Print Huffman codes
+        System.out.println("Huffman codes are:");
+        printCode(root, "");
+    }
+}
+`,
+            3: `import java.util.*;
+
+public class Knapsack{
+    public static int knapsack(int[] weight, int[] profit , int capacity){
+        int n = weight.length;
+        int[][]dp = new int[n+1][capacity+1];
+
+        //build dp table
+        for(int i = 1; i <=n ; i++){
+            for(int w =0; w <= capacity ; w++){
+                //if curr item fits
+                if(weight[i-1]<= w){
+                    dp[i][w] = Math.max(profit[i-1]+ dp[i-1] [w-weight[i-1]] , dp[i-1][w]);
+                }
+                else{
+                    dp[i][w] = dp[i-1][w];
+                }
+                }
+            }
+        return dp[n][capacity];
+        
+        }
+    public static void main(String[] args){
+        int[] weight = {5,2,4,3};
+        int[] profit = {20,30,15,10};
+
+        int capacity = 7;
+        System.out.println("Max Profit " + knapsack(weight , profit , capacity));
+        
+    }
+    
+    }
+
+`,
+            4: `public class NQueens {
+
+    static int N = 4;
+    static int[][] board = new int[N][N];
+
+    // Check if queen can be placed safely
+    static boolean isSafe(int row, int col) {
+
+        // Check same column above
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 1)
+                return false;
+        }
+
+        // Check upper-left diagonal
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        // Check upper-right diagonal
+        for (int i = row - 1, j = col + 1; i >= 0 && j < N; i--, j++) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        return true;
+    }
+
+    // Place queens row by row
+    static boolean solve(int row) {
+
+        // All queens placed
+        if (row == N)
+            return true;
+
+        // Try every column in current row
+        for (int col = 0; col < N; col++) {
+
+            if (isSafe(row, col)) {
+
+                board[row][col] = 1;
+
+                if (solve(row + 1))
+                    return true;
+
+                // Backtrack
+                board[row][col] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+
+        // First queen is already placed at (0, 1)
+        board[0][1] = 1;
+
+        if (solve(1)) {
+            System.out.println("Solution:");
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    System.out.print(board[i][j] + " ");
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("No solution exists");
+        }
+    }
+}`,
+            5: `import java.util.*;
+
+public class QuickSort {
+
+    // Deterministic Quick Sort
+    static int partition(int[] arr, int low, int high) {
+
+        int pivot = arr[high]; // Fixed pivot: last element
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
+    }
+
+    static void quickSort(int[] arr, int low, int high) {
+
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    // Randomized Quick Sort
+    static int randomizedPartition(int[] arr, int low, int high) {
+
+        Random rand = new Random();
+
+        // Choose a random pivot index
+        int randomIndex = low + rand.nextInt(high - low + 1);
+
+        // Swap random pivot with last element
+        int temp = arr[randomIndex];
+        arr[randomIndex] = arr[high];
+        arr[high] = temp;
+
+        // Use normal partition
+        return partition(arr, low, high);
+    }
+
+    static void randomizedQuickSort(int[] arr, int low, int high) {
+
+        if (low < high) {
+            int pi = randomizedPartition(arr, low, high);
+
+            randomizedQuickSort(arr, low, pi - 1);
+            randomizedQuickSort(arr, pi + 1, high);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        int[] arr1 = {8, 3, 1, 7, 0, 10, 2};
+        int[] arr2 = arr1.clone();
+
+        // Deterministic Quick Sort
+        quickSort(arr1, 0, arr1.length - 1);
+
+        System.out.println("Deterministic Quick Sort:");
+        System.out.println(Arrays.toString(arr1));
+
+        // Randomized Quick Sort
+        randomizedQuickSort(arr2, 0, arr2.length - 1);
+
+        System.out.println("Randomized Quick Sort:");
+        System.out.println(Arrays.toString(arr2));
+    }
+}`,
+            6: `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract BankAccount{
+    address public owner;
+    uint256 public balance;
+
+    event Deposit(address indexed account , uint256 amount);
+    event WithDrawal(address indexed account , uint256 amount);
+
+    constructor(){
+        owner = msg.sender;
+        balance =0;
+
+    }
+    modifier onlyOwner(){
+        require(msg.sender == owner , "Only owner can perform this action");
+        _;
+    }
+
+    //deposit function
+
+    function deposit()public payable {
+        require(msg.value>0 , "Deposit numst be greater than zero");
+        balance+= msg.value;
+        emit Deposit(msg.sender, msg.value);
+
+
+
+    }
+
+    //withdrawal function
+    function withDraw(uint256 amount) public payable{
+        require(amount>0 , "Amount should must be greater than zero");
+        require(balance>= amount , "Insuffient funds");
+        balance-=amount;
+
+        (bool success , ) = payable(owner).call{value:amount}("");
+        require(success , "Trasfer Failed");
+        emit WithDrawal(msg.sender, msg.value);
+
+       
+
+    }
+     function getBalance() public view returns(uint256){
+        return balance;
+        
+            
+        }
+
+
+
+}`,
+            7: `
+ // SPDX-License-Identifier: MIT
+ pragma solidity ^0.8.0;
+
+ contract StudentData {
+
+     struct Student {
+         string name;
+         string className;
+         uint256 age;
+         uint256 rollNo;
+     }
+
+     Student[] public students;
+     address public owner;
+
+     constructor() {
+         owner = msg.sender;
+     }
+
+     modifier onlyOwner() {
+         require(msg.sender == owner, "Only owner can add students");
+         _;
+     }
+
+     function addStudent(
+         string memory _name,
+         string memory _className,
+         uint256 _age,
+         uint256 _rollNo
+     ) public onlyOwner {
+
+         require(bytes(_name).length > 0, "Invalid name");
+         require(_age > 0 && _age <= 150, "Invalid age");
+
+         students.push(Student(_name, _className, _age, _rollNo));
+     }
+
+     function getTotalStudents() public view returns (uint256) {
+         return students.length;
+     }
+
+     function getStudent(uint256 index)
+         public view
+         returns (string memory, string memory, uint256, uint256)
+     {
+         require(index < students.length, "Invalid index");
+
+         Student memory s = students[index];
+
+         return (s.name, s.className, s.age, s.rollNo);
+     }
+ }
+`,
+
+
+
+
+
+
+
+        };
+
+        function copyCode(id, btn) {
+            const code = assignmentCodes[id];
+            navigator.clipboard.writeText(code).then(() => {
+                const original = btn.textContent;
+                btn.textContent = "✅ Copied!";
+                btn.classList.add("copied");
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.classList.remove("copied");
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+
+</html>
